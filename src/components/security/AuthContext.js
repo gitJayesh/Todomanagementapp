@@ -1,17 +1,31 @@
 import { createContext, useContext, useState } from "react";
 
+//creating a context
 export const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+//share the created context with other compnents
 export default function AuthProvider({ children }) {
-  const [number, setNumber] = useState(10);
+  //put some state in context
+
   const [isAuthenticated, setAuthenticated] = useState(false);
 
-  // setInterval(() => setNumber(number + 1), 10);
+  function login(username, password) {
+    if (username === "in28minutes" && password === "dummy") {
+      setAuthenticated(true);
+      return true;
+    } else {
+      setAuthenticated(false);
+      return false;
+    }
+  }
 
+  function logout() {
+    setAuthenticated(false);
+  }
   return (
-    <AuthContext.Provider value={{ number, isAuthenticated, setAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

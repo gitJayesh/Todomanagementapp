@@ -5,7 +5,6 @@ import { useAuth } from "../security/AuthContext";
 const LoginComponent = () => {
   const [username, setUsername] = useState("in28minutes");
   const [password, setPassword] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const navigate = useNavigate();
@@ -20,23 +19,15 @@ const LoginComponent = () => {
     setPassword(e.target.value);
   }
   function handleSubmit() {
-    if (username === "in28minutes" && password === "dummy") {
-      authContext.setAuthenticated(true);
-      setShowSuccessMessage(true);
-      setShowErrorMessage(false);
+    if (authContext.login(username, password)) {
       navigate(`/welcome/${username}`);
     } else {
-      authContext.setAuthenticated(false);
-      setShowSuccessMessage(false);
       setShowErrorMessage(true);
     }
   }
 
   return (
     <div className="Login">
-      {showSuccessMessage && (
-        <div className="successMessage">Authenticated successfully </div>
-      )}
       {showErrorMessage && (
         <div className="errorMessage">Authentication failed </div>
       )}
